@@ -1,0 +1,37 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Autocomplete API</title>
+</head>
+<body>
+    <h1>Autocomplete API</h1>
+    <label for="prefix">Enter prefix:</label>
+    <input type="text" id="prefix" />
+    <button onclick="getCompletions()">Get Completions</button>
+    <ul id="completions">
+    </ul>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function getCompletions() {
+            const prefix = document.getElementById('prefix').value;
+            $.ajax({
+                url: `http://localhost:8080/autocomplete?prefix=${prefix}`,
+                method: 'GET',
+                success: function(data) {
+                    const completionsList = document.getElementById('completions');
+                    completionsList.innerHTML = '';
+                    data.forEach(function(completion) {
+                        const li = document.createElement('li');
+                        li.textContent = completion;
+                        completionsList.appendChild(li);
+                    });
+                },
+                error: function(xhr, status, error) {
+                    alert('Error: ' + error);
+                }
+            });
+        }
+    </script>
+</body>
+</html>
